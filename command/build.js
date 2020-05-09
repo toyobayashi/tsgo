@@ -8,11 +8,10 @@ module.exports = new Task('build', async function (config) {
     runTSC(config.tsconfig.esm, false, config.externalApiDeclarationDir, 'lib/esm'),
     invoke('umd', config)
   ])
-  if (r[1] === false) {
-    throw new Error(`TSConfig not found: ${getPath(config.tsconfig.esm)}`)
+  if (r[1] === true) {
+    await invoke('dts', config)
+    await invoke('doc', config)
   }
-  await invoke('dts', config)
-  await invoke('doc', config)
   return 0
 })
 
