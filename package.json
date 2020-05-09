@@ -1,6 +1,6 @@
 {
   "name": "@tybys/tsgo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "description": "A commandline tool for using TypeScript to write libraries and export API documentation",
   "bin": {

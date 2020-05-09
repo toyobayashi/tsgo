@@ -23,5 +23,5 @@ module.exports = new Task('watch', async function (config/* , logger */) {
     runTSC(config.tsconfig.cjs, true),
     runTSC(config.tsconfig.esm, true)
   ])
-  return 0
+  throw new Error(`Must exists ${config.tsconfig.cjs} or ${config.tsconfig.esm}`)
 })
