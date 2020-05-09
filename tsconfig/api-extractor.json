@@ -49,9 +49,9 @@
   },
 
   "tsdocMetadata": {
-    // "enabled": true,
+    "enabled": true,
 
-    // "tsdocMetadataFilePath": "<projectFolder>/dist/tsdoc-metadata.json"
+    "tsdocMetadataFilePath": "<projectFolder>/dist/tsdoc-metadata.json"
   },
 
   // "newlineKind": "crlf",

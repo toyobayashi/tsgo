@@ -24,7 +24,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@tybys/tsgo": "^0.0.4",
+    "@tybys/tsgo": "^0.0.5",
     "@types/node": "^12.12.36",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
