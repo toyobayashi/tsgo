@@ -1,0 +1,42 @@
+{
+  "name": "@tybys/tsgo",
+  "version": "0.0.1",
+  "main": "index.js",
+  "description": "A commandline tool for using TypeScript to write libraries and export API documentation",
+  "bin": {
+    "tsgo": "./bin/tsgo.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toyobayashi/tsgo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/toyobayashi/tsgo/issues"
+  },
+  "homepage": "https://github.com/toyobayashi/tsgo#readme",
+  "keywords": ["typescript"],
+  "author": "toyobayashi",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@microsoft/api-documenter": "^7.8.0",
+    "@microsoft/api-extractor": "^7.8.0",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-json": "^4.0.3",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "@rollup/plugin-replace": "^2.3.2",
+    "@rollup/plugin-typescript": "^4.1.1",
+    "@tybys/find-npm-prefix": "^2.0.0",
+    "@tybys/native-require": "^1.1.0",
+    "chalk": "^4.0.0",
+    "deepmerge": "^4.2.2",
+    "fs-extra": "^9.0.0",
+    "rollup": "^2.8.2",
+    "rollup-plugin-terser": "^5.3.0",
+    "terser-webpack-plugin": "^3.0.1",
+    "ts-loader": "^7.0.3",
+    "webpack": "^4.43.0"
+  }
+}
