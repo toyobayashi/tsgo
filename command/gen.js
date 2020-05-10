@@ -12,19 +12,9 @@ module.exports = new Task('gen', async function (config, logger) {
   }
 
   await copy(join(__dirname, '../template'), root)
-  await Promise.all([
-    rename(join(root, 'cjs.txt'), join(root, 'tsconfig.json')),
-    rename(join(root, 'esm.txt'), join(root, 'tsconfig.esm.json')),
-    rename(join(root, 'prod.txt'), join(root, 'tsconfig.prod.json')),
-    rename(join(root, 'dot_eslintignore'), join(root, '.eslintignore')),
-    rename(join(root, 'dot_eslintrc.js'), join(root, '.eslintrc.js')),
-    rename(join(root, 'dot_gitignore'), join(root, '.gitignore')),
-    rename(join(root, 'dot_npmignore'), join(root, '.npmignore'))
-  ])
-  const pkgpath = join(root, 'package.json')
-  let pkg = await readFile(pkgpath, 'utf8')
-  pkg = pkg.replace(/<name>/g, config.library).replace(/<author>/g, require('os').userInfo().username)
-  await writeFile(pkgpath, pkg, 'utf8')
+  await writeFile(join(root, 'package.json'), getPackageJson({ name: config.library, author: require('os').userInfo().username }), 'utf8')
+  await writeFile(join(root, '.gitignore'), getGitignore(), 'utf8')
+  await writeFile(join(root, '.npmignore'), getNpmignore(), 'utf8')
   try {
     await spawn(process.platform === 'win32' ? 'git.exe' : 'git', ['init'])
     await spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['install'])
@@ -32,3 +22,78 @@ module.exports = new Task('gen', async function (config, logger) {
 
   return 0
 })
+
+function getPackageJson ({ name, author }) {
+  return JSON.stringify({
+    name,
+    version: '0.0.1',
+    description: '',
+    typings: './lib/esm/index.d.ts',
+    module: './lib/esm/index.js',
+    main: './lib/cjs/index.js',
+    scripts: {
+      prepare: 'npm run build',
+      cjs: 'tsgo cjs',
+      esm: 'tsgo esm',
+      umd: 'tsgo umd',
+      dts: 'tsgo dts',
+      doc: 'tsgo doc',
+      watch: 'tsgo watch',
+      build: 'tsgo build',
+      lint: 'tsgo lint',
+      fix: 'tsgo fix'
+    },
+    keywords: [],
+    author,
+    license: "MIT",
+    publishConfig: {
+      access: "public"
+    },
+    devDependencies: {
+      '@tybys/tsgo': `^${require('../package.json').version}`,
+      '@types/node': '^12.12.36',
+      '@typescript-eslint/eslint-plugin': '^2.31.0',
+      '@typescript-eslint/parser': '^2.31.0',
+      eslint: '^6.8.0',
+      'eslint-config-standard-with-typescript': '^16.0.0',
+      'eslint-plugin-import': '^2.20.2',
+      'eslint-plugin-node': '^11.1.0',
+      'eslint-plugin-promise': '^4.2.1',
+      'eslint-plugin-standard': '^4.0.1',
+      typescript: '^3.8.3'
+    },
+    dependencies: {
+      '@tybys/native-require': '^1.1.0'
+    }
+  }, null, 2)
+}
+
+function getNpmignore () {
+  return `.gitignore
+.gitattributes
+.DS_Store
+package-lock.json
+node_modules
+/docs
+/temp
+tsconfig*.json
+.vscode
+/scripts
+api-extractor.json
+.eslint*
+gulpfile.*
+/test
+`  
+}
+
+function getGitignore () {
+  return `node_modules
+.DS_Store
+/lib
+tsdoc-metadata.json
+package-lock.json
+/temp
+/dist
+/test/out
+`
+}
