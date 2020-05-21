@@ -12,7 +12,9 @@ module.exports = new Task('watch', async function (config/* , logger */) {
 
   w
     .on('change', path => {
-      lintFile([path])
+      lintFile([path]).catch(err => {
+        console.error(err)
+      })
     })
   config.bundler.forEach(b => {
     if (typeof watcher[b] === 'function') {
