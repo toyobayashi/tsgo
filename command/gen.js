@@ -60,7 +60,8 @@ function getPackageJson ({ name, author }) {
       'eslint-plugin-node': '^11.1.0',
       'eslint-plugin-promise': '^4.2.1',
       'eslint-plugin-standard': '^4.0.1',
-      typescript: '^3.9.3'
+      tslib: '^2.0.0',
+      typescript: '^3.9.7'
     },
     dependencies: {
       '@tybys/native-require': '^1.1.0'
