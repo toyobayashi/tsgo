@@ -9,6 +9,8 @@
     "noImplicitReturns": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "noEmitHelpers": true
   }
 }

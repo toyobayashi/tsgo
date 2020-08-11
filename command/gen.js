@@ -52,19 +52,20 @@ function getPackageJson ({ name, author }) {
     devDependencies: {
       '@tybys/tsgo': `^${require('../package.json').version}`,
       '@types/node': '^12.12.36',
-      '@typescript-eslint/eslint-plugin': '^3.0.2',
-      '@typescript-eslint/parser': '^3.0.2',
-      eslint: '^7.1.0',
+      '@typescript-eslint/eslint-plugin': '^3.9.0',
+      '@typescript-eslint/parser': '^3.9.0',
+      eslint: '^7.6.0',
       'eslint-config-standard-with-typescript': '^18.0.2',
-      'eslint-plugin-import': '^2.20.2',
+      'eslint-plugin-import': '^2.22.0',
       'eslint-plugin-node': '^11.1.0',
       'eslint-plugin-promise': '^4.2.1',
       'eslint-plugin-standard': '^4.0.1',
-      tslib: '^2.0.0',
-      typescript: '^3.9.7'
+      rollup: '^2.23.1',
+      typescript: '^4.0.1-rc',
     },
     dependencies: {
-      '@tybys/native-require': '^1.1.0'
+      '@tybys/native-require': '^1.1.0',
+      tslib: '^2.0.0',
     }
   }, null, 2)
 }
