@@ -64,8 +64,8 @@ function getPackageJson ({ name, author }) {
       typescript: '^4.0.1-rc',
     },
     dependencies: {
-      '@tybys/native-require': '^1.1.0',
-      tslib: '^2.0.0',
+      '@tybys/native-require': '^1.3.1',
+      tslib: '^2.0.1',
     }
   }, null, 2)
 }
@@ -85,6 +85,7 @@ api-extractor.json
 .eslint*
 gulpfile.*
 /test
+tsgo.config*
 `  
 }
 
