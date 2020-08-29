@@ -1,10 +1,13 @@
 const { Task } = require('../lib/task.js')
-const { copy, readdir, readFile, writeFile, rename } = require('fs-extra')
-const { spawn } = require('../lib/util.js')
+const { copy, readdir, readFile, writeFile, rename, readJson, writeJson } = require('fs-extra')
+const util = require('../lib/util.js')
+const spawn = util.spawn
 const { join } = require('path')
 
 module.exports = new Task('gen', async function (config, logger) {
+  const oldContext = util.context
   const root = process.cwd()
+  util.context = root
 
   const items = await readdir(root)
   if (items.length) {
@@ -15,11 +18,23 @@ module.exports = new Task('gen', async function (config, logger) {
   await writeFile(join(root, 'package.json'), getPackageJson({ name: config.library, author: require('os').userInfo().username }), 'utf8')
   await writeFile(join(root, '.gitignore'), getGitignore(), 'utf8')
   await writeFile(join(root, '.npmignore'), getNpmignore(), 'utf8')
+  if (process.env.TSGO_DEBUG) {
+    let file, tsconfig
+    const list = ['tsconfig.json', 'tsconfig.esm.json', 'tsconfig.modern.json', 'tsconfig.cjs.json']
+    for (const name of list) {
+      file = join(root, name)
+      tsconfig = await readJson(file)
+      tsconfig.extends = `../tsconfig/${name}`
+      await writeJson(file, tsconfig, { spaces: 2 })
+    }
+  }
   try {
-    await spawn(process.platform === 'win32' ? 'git.exe' : 'git', ['init'])
+    if (!process.env.TSGO_DEBUG) {
+      await spawn(process.platform === 'win32' ? 'git.exe' : 'git', ['init'])
+    }
     await spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['install'])
   } catch (_) {}
-
+  util.context = oldContext
   return 0
 })
 
@@ -28,9 +43,9 @@ function getPackageJson ({ name, author }) {
     name,
     version: '0.0.1',
     description: '',
-    typings: './lib/esm/index.d.ts',
+    typings: './lib/cjs-modern/index.d.ts',
     module: './lib/esm/index.js',
-    main: './lib/cjs/index.js',
+    main: './lib/cjs-modern/index.js',
     scripts: {
       prepare: 'npm run build',
       cjs: 'tsgo cjs',
@@ -50,7 +65,7 @@ function getPackageJson ({ name, author }) {
       access: "public"
     },
     devDependencies: {
-      '@tybys/tsgo': `^${require('../package.json').version}`,
+      ...(process.env.TSGO_DEBUG ? {} : { '@tybys/tsgo': `^${require('../package.json').version}` }),
       '@types/node': '^12.12.36',
       '@typescript-eslint/eslint-plugin': '^3.9.0',
       '@typescript-eslint/parser': '^3.9.0',
@@ -61,11 +76,11 @@ function getPackageJson ({ name, author }) {
       'eslint-plugin-promise': '^4.2.1',
       'eslint-plugin-standard': '^4.0.1',
       rollup: '^2.23.1',
-      typescript: '^4.0.1-rc',
+      typescript: '3.9.7',
     },
     dependencies: {
       '@tybys/native-require': '^1.3.1',
-      tslib: '^2.0.1',
+      tslib: '2.0.1',
     }
   }, null, 2)
 }

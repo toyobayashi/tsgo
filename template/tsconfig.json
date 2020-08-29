@@ -1,7 +1,7 @@
 {
   "extends": "./node_modules/@tybys/tsgo/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "outDir": "./lib/cjs"
+    "outDir": "./lib/cjs-modern"
   },
   "include": [
     "./src/**/*"

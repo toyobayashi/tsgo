@@ -1,6 +1,0 @@
-{
-  "extends": "./node_modules/@tybys/tsgo/tsconfig/tsconfig.prod.json",
-  "include": [
-    "./src/**/*"
-  ]
-}

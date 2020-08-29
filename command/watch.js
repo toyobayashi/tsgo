@@ -22,8 +22,10 @@ module.exports = new Task('watch', async function (config/* , logger */) {
     }
   })
   await Promise.all([
-    runTSC(config.tsconfig.cjs, true),
-    runTSC(config.tsconfig.esm, true)
+    runTSC(config.tsconfig.cjs, true, config.externalApiDeclarationDir, 'lib/cjs', config.tsTransform),
+    runTSC(config.tsconfig.esm, true, config.externalApiDeclarationDir, 'lib/esm', config.tsTransform),
+    runTSC(config.tsconfig.cjsModern, true, config.externalApiDeclarationDir, 'lib/esm-modern', config.tsTransform),
+    runTSC(config.tsconfig.esmModern, true, config.externalApiDeclarationDir, 'lib/esm-modern', config.tsTransform),
   ])
   throw new Error(`Must exists ${config.tsconfig.cjs} or ${config.tsconfig.esm}`)
 })
