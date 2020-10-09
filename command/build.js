@@ -13,6 +13,9 @@ module.exports = new Task('build', async function (config) {
     await invoke('umd', config)
     await invoke('dts', config)
     await invoke('doc', config)
+  } else if (r[2] === true) {
+    await invoke('dts', config)
+    await invoke('doc', config)
   }
   return 0
 })
