@@ -3,13 +3,22 @@ const { getPath } = require('../lib/util.js')
 const { Task } = require('../lib/task.js')
 
 module.exports = new Task('dts', async function (config/* , logger */) {
+  const fs = require('fs')
+  const path = require('path')
   const dtsHack = require('../lib/dts.js')
   let info = null
+  const apiExtractorJSonPath = getPath('api-extractor.json')
   if (config.namespaceWrapper === true) {
-    info = dtsHack.applyChange(getPath('lib/esm'))
+    if (fs.existsSync(apiExtractorJSonPath)) {
+      const conf = JSON.parse(fs.readFileSync(apiExtractorJSonPath, 'utf8'))
+      const mainEntryPointFilePath = conf.mainEntryPointFilePath.replace(/<projectFolder>/g, typeof conf.projectFolder === 'string' ? conf.projectFolder : getPath())
+      info = dtsHack.applyChange(path.dirname(mainEntryPointFilePath))
+    } else {
+      info = dtsHack.applyChange(getPath('lib/esm'))
+    }
   }
   try {
-    invokeApiExtractor()
+    invokeApiExtractor(apiExtractorJSonPath)
   } catch (err) {
     if (config.namespaceWrapper === true) {
       dtsHack.revertChange(info)
@@ -25,15 +34,13 @@ module.exports = new Task('dts', async function (config/* , logger */) {
   return 0
 })
 
-function invokeApiExtractor () {
+function invokeApiExtractor (apiExtractorJsonPath) {
   const fs = require('fs')
   const path = require('path')
   const {
     Extractor,
     ExtractorConfig
   } = require('@microsoft/api-extractor')
-
-  const apiExtractorJsonPath = getPath('api-extractor.json')
 
   let extractorConfig
   if (fs.existsSync(apiExtractorJsonPath)) {
