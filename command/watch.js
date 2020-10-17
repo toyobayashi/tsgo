@@ -18,7 +18,11 @@ module.exports = new Task('watch', async function (config/* , logger */) {
     })
   config.bundler.forEach(b => {
     if (typeof watcher[b] === 'function') {
-      watcher[b](config)
+      try {
+        watcher[b](config)
+      } catch (error) {
+        console.warn(`Bundler watching failed: ${error.message}`)
+      }
     }
   })
   await Promise.all([
