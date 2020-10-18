@@ -79,7 +79,7 @@ function getPackageJson ({ name, author }) {
       typescript: '3.9.7',
     },
     dependencies: {
-      '@tybys/native-require': '^2.0.2',
+      '@tybys/native-require': '^3.0.0',
       tslib: '2.0.1',
     }
   }, null, 2)
