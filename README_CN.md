@@ -70,6 +70,15 @@ $ tsgo gen
 
     ESLint 格式化源码。
 
+## bundleOnly 编译时变量表
+
+| `__TSGO_FORMAT__` | `umd` | `cjs` | `esm-bundler` | `esm-browser` | `esm-node` | `iife` |
+| :-----: | :----: | :----: | :----: | :----: | :----: | :----: |
+| 文件后缀 | `.js` | `.cjs.js` | `.esm-bundler.js` | `.esm-browser.js` | `.mjs` | `.global.js` |
+| 预处理 `process.env.NODE_ENV` | ✔ | ✔ | ❌ | ✔ | ❌ | ✔ |
+| `__TSGO_DEV__` <br/>（为开发构建） | 不压缩则 `true` | 不压缩则 `true` | `process.env.NODE_ENV !== 'production'` | 不压缩则 `true` | `process.env.NODE_ENV !== 'production'` | 不压缩则 `true` |
+| `__TSGO_GLOBAL__` <br/>（可在浏览器全局引入） | ✔ | ❌ | ❌ |❌ | ❌ | ✔ |
+
 ## 默认配置
 
 根目录 `tsgo.config.js`
@@ -82,6 +91,9 @@ const defaultConfig = {
     rollup: 'dist', // UMD 模块输出目录
     doc: 'docs/api' // API 文档输出目录
   },
+  bundleOnly: false, // ('umd' | 'cjs' | 'esm-bundler' | 'esm-browser' | 'esm-node' | 'iife')[]
+  bundleDefine: {},
+  rollupGlobals: {},
   bundler: ['rollup'], // 只采用 rollup 打包
   library: packageJson.name, // UMD 全局暴露变量名
   tsconfig: {
@@ -98,6 +110,9 @@ const defaultConfig = {
     tslibLocalPath: '', // 从本地 tslib 导入 helper 函数，tslib 模块的位置
     ignoreErrorCodes: [] // 这里的 TS 错误码不报错
   },
+  resolveOnly: [],
+  dtsFormat: 'umd',
+  webpackTarget: 'web',
   replaceESModule: false, // 兼容 IE8
   terserOptions: { // 看 terser 文档
     ie8: false,

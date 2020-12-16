@@ -28,6 +28,8 @@ exports.main = async function main (argc, argv) {
   return 0
 }
 
+exports.defineFormat = require('./lib/format').defineFormat
+
 function printHelp () {
   const path = require('path')
   console.log('Usage: tsgo <command>')
