@@ -1,8 +1,9 @@
 const { Task } = require('../lib/task.js')
-const { copy, readdir, readFile, writeFile, rename, readJson, writeJson } = require('fs-extra')
+const { copy, readdir, readFile, writeFile, rename, readJson, writeJson, readJsonSync, mkdirs } = require('fs-extra')
 const util = require('../lib/util.js')
 const spawn = util.spawn
-const { join } = require('path')
+const { join, dirname } = require('path')
+const find = require('@tybys/find-npm-prefix')
 
 module.exports = new Task('gen', async function (config, logger) {
   const oldContext = util.context
@@ -18,6 +19,13 @@ module.exports = new Task('gen', async function (config, logger) {
   await writeFile(join(root, 'package.json'), getPackageJson({ name: config.library, author: require('os').userInfo().username }), 'utf8')
   await writeFile(join(root, '.gitignore'), getGitignore(), 'utf8')
   await writeFile(join(root, '.npmignore'), getNpmignore(), 'utf8')
+  await mkdirs(join(root, '.vscode'))
+  await writeJson(join(root, '.vscode', 'settings.json'), {
+    'files.associations': {
+      'api-extractor.json': 'jsonc'
+    },
+    'typescript.tsdk': 'node_modules/typescript/lib'
+  }, { spaces: 2 })
   if (process.env.TSGO_DEBUG) {
     let file, tsconfig
     const list = ['tsconfig.json', 'tsconfig.esm.json', 'tsconfig.modern.json', 'tsconfig.cjs.json']
@@ -39,6 +47,13 @@ module.exports = new Task('gen', async function (config, logger) {
 })
 
 function getPackageJson ({ name, author }) {
+  let typescriptVersion
+  try {
+    typescriptVersion = readJsonSync(join(find.findPrefixSync(dirname(require.resolve('@microsoft/api-extractor'))), 'package.json')).dependencies.typescript
+  } catch (_) {
+    typescriptVersion = '~4.1.5'
+  }
+
   return JSON.stringify({
     name,
     version: '0.0.1',
@@ -75,7 +90,7 @@ function getPackageJson ({ name, author }) {
       'eslint-plugin-node': '^11.1.0',
       'eslint-plugin-promise': '^5.1.0',
       rollup: '^2.45.2',
-      typescript: '4.1.3',
+      typescript: typescriptVersion,
     },
     dependencies: {
       '@tybys/native-require': '^3.0.1',
