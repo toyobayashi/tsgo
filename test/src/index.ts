@@ -4,9 +4,18 @@
  * @packageDocumentation
  */
 
-import { add } from './add'
-import * as mytslib from 'tslib/aaa.ts'
+import { add } from './add.ts'
+import * as mytslib from 'tslib'
 console.log(mytslib)
+
+declare const __VERSION__: string
+// const __VERSION__ = '2'
+const a: string = __VERSION__
+
+function b () {
+  console.log(__VERSION__)
+}
+console.log(a)
 
 import('./add.ts').then(mod => {
   console.log(mod.add(3, 4))
