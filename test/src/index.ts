@@ -13,6 +13,7 @@ declare const __VERSION__: string
 const a: string = __VERSION__
 
 function b () {
+  const __VERSION__ = 1
   console.log(__VERSION__)
 }
 console.log(a)
