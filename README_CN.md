@@ -120,7 +120,6 @@ const defaultConfig = {
       comments: false
     }
   },
-  namespaceWrapper: false, // 简单支持 import * as ___ from './___' 导入本地模块，api-extractor 暂不支持 
   externalApiDeclarationDir: 'api' // 额外的 .d.ts 存放目录，编译时被复制 
 }
 ```

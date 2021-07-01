@@ -1,6 +1,6 @@
 {
   "name": "@tybys/tsgo",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "main": "index.js",
   "description": "A commandline tool for using TypeScript to write libraries and export API documentation",
   "bin": {
@@ -23,8 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@microsoft/api-documenter": "^7.13.6",
-    "@microsoft/api-extractor": "^7.15.1",
+    "@microsoft/api-documenter": "^7.13.27",
+    "@microsoft/api-extractor": "^7.17.0",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-inject": "^4.0.2",
     "@rollup/plugin-json": "^4.1.0",
@@ -33,7 +33,7 @@
     "@tybys/find-npm-prefix": "^2.0.0",
     "@tybys/native-require": "^3.0.3",
     "chalk": "^4.1.1",
-    "chokidar": "^3.5.1",
+    "chokidar": "^3.5.2",
     "deepmerge": "^4.2.2",
     "fs-extra": "^10.0.0",
     "rollup-plugin-terser": "^7.0.2",
