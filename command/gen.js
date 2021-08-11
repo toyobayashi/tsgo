@@ -51,7 +51,7 @@ function getPackageJson ({ name, author }) {
   try {
     typescriptVersion = readJsonSync(join(find.findPrefixSync(dirname(require.resolve('@microsoft/api-extractor'))), 'package.json')).dependencies.typescript
   } catch (_) {
-    typescriptVersion = '~4.1.5'
+    typescriptVersion = '~4.3.5'
   }
 
   return JSON.stringify({
@@ -82,14 +82,14 @@ function getPackageJson ({ name, author }) {
     devDependencies: {
       ...(process.env.TSGO_DEBUG ? {} : { '@tybys/tsgo': `^${require('../package.json').version}` }),
       '@types/node': '^14.14.41',
-      '@typescript-eslint/eslint-plugin': '^4.28.1',
-      '@typescript-eslint/parser': '^4.28.1',
-      eslint: '^7.29.0',
+      '@typescript-eslint/eslint-plugin': '^4.29.1',
+      '@typescript-eslint/parser': '^4.29.1',
+      eslint: '^7.32.0',
       'eslint-config-standard-with-typescript': '^20.0.0',
-      'eslint-plugin-import': '^2.23.4',
+      'eslint-plugin-import': '^2.24.0',
       'eslint-plugin-node': '^11.1.0',
       'eslint-plugin-promise': '^5.1.0',
-      rollup: '^2.52.6',
+      rollup: '^2.56.2',
       typescript: typescriptVersion,
     },
     dependencies: {
