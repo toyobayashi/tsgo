@@ -28,7 +28,7 @@ module.exports = new Task('dts', async function (config/* , logger */) {
   /* if (config.namespaceWrapper === true) {
     dtsHack.revertChange(info)
   } */
-  const dtsPath = getPath(`dist/${config.library}.d.ts`)
+  const dtsPath = getPath(`dist/${config.output.name}.d.ts`)
   const dtsFormat = config.dtsFormat || 'umd'
   dtsHack.resolveDeclarationFile(dtsPath, config.library, dtsFormat)
   return 0
