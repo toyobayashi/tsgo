@@ -91,7 +91,15 @@ const defaultConfig = {
     rollup: 'dist', // UMD 模块输出目录
     doc: 'docs/api' // API 文档输出目录
   },
-  bundleOnly: false, // ('umd' | 'cjs' | 'esm-bundler' | 'esm-browser' | 'esm-node' | 'iife')[]
+  // type F = 'umd' | 'cjs' | 'esm-bundler' | 'esm-browser' | 'esm-node' | 'iife'
+  // boolean | Array<F | {
+  //   type: F
+  //   minify?: boolean
+  //   bundleDefine?: Record<string, any>
+  //   rollupGlobals?: Record<string, string>
+  //   resolveOnly?: string[]
+  // }>
+  bundleOnly: false,
   bundleDefine: {},
   rollupGlobals: {},
   bundler: ['rollup'], // 只采用 rollup 打包
