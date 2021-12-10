@@ -1,6 +1,6 @@
 {
   "name": "@tybys/tsgo",
-  "version": "0.15.1",
+  "version": "0.16.0",
   "main": "index.js",
   "description": "A commandline tool for using TypeScript to write libraries and export API documentation",
   "bin": {
@@ -30,6 +30,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/plugin-typescript": "^8.3.0",
     "@tybys/find-npm-prefix": "^2.0.0",
     "@tybys/native-require": "^3.0.3",
     "chalk": "^4.1.2",

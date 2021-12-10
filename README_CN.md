@@ -116,8 +116,13 @@ const defaultConfig = {
     // 'node' （ESM 转换成 '.mjs'）
     moduleSuffix: 'default',
     tslibLocalPath: '', // 从本地 tslib 导入 helper 函数，tslib 模块的位置
-    ignoreErrorCodes: [] // 这里的 TS 错误码不报错
+    pureClass: true,
+    ignoreErrorCodes: [], // 这里的 TS 错误码不报错
+    define: {}
   },
+  pureClass: false,
+  externalRollupPlugins: [],
+  externalWebpackPlugins: [],
   resolveOnly: [],
   dtsFormat: 'umd',
   webpackTarget: 'web',
