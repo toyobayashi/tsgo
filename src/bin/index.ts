@@ -2,6 +2,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
+import * as os from 'os'
 import { findPrefix } from './find-prefix'
 import { DynamicCommandLineParser, CommandLineAction } from '@rushstack/ts-command-line'
 import { build, watch } from '../index'
@@ -132,7 +133,8 @@ class InitAction extends CommandLineAction {
     this._copyTemplate(root, {
       packageName,
       unscopedPackageName,
-      tsgoVersion: pkg.version
+      tsgoVersion: pkg.version,
+      username: os.userInfo().username
     })
   }
 }

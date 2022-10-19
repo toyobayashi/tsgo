@@ -22,7 +22,7 @@
     "prepare": "npm run build"
   },
   "keywords": [],
-  "author": "li.f.18",
+  "author": "${username}",
   "license": "MIT",
   "devDependencies": {
     "@tybys/tsgo": "^${tsgoVersion}",
