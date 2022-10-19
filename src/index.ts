@@ -36,7 +36,7 @@ export async function build (config: Configuration): Promise<void> {
   })
 
   if (config.bundleTargets?.length) {
-    void rollupBuild(config.bundleTargets.map(getRollupConfig))
+    void rollupBuild(config.bundleTargets.map((target) => getRollupConfig(target, config)))
   }
 
   const apiExtractorJsonPath = path.resolve(config.root, 'api-extractor.json')
@@ -55,7 +55,7 @@ export function watch (config: Configuration): void {
   })
 
   if (config.bundleTargets?.length) {
-    rollupWatch(config.bundleTargets.map(getRollupConfig))
+    rollupWatch(config.bundleTargets.map((target) => getRollupConfig(target, config)))
   }
 }
 

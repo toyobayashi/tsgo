@@ -6,6 +6,7 @@ import { terser as rollupTerser } from 'rollup-plugin-terser'
 import rollupNodeResolve from '@rollup/plugin-node-resolve'
 import { camelCase } from 'change-case'
 import type { MinifyOptions } from 'terser'
+import type { Configuration } from './index'
 
 const rollupJSON = require('@rollup/plugin-json') as typeof import('@rollup/plugin-json').default
 const rollupCommonJS = require('@rollup/plugin-commonjs') as typeof import('@rollup/plugin-commonjs').default
@@ -79,20 +80,22 @@ export interface RollupConfig {
   output: OutputOptions
 }
 
-export function getRollupConfig (config: BundleConfig): RollupConfig {
-  const minify = config.minify ?? false
-  const type = config.type ?? 'umd'
-  const rollupGlobals = config.globals ?? {}
-  const bundleDefine = config.define ?? {}
+export function getRollupConfig (target: BundleConfig, config: Configuration): RollupConfig {
+  const minify = target.minify ?? false
+  const type = target.type ?? 'umd'
+  const rollupGlobals = target.globals ?? {}
+  const bundleDefine = target.define ?? {}
 
   const f = formats[type]
   if (!f) {
     throw new Error('Not supported format: ' + type)
   }
   const formatConf = f(minify)
-  const outputFilename = path.resolve(config.output.path, `${config.output.name}${formatConf.ext}`)
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const name = target.output.name || config.libraryName || ''
+  const outputFilename = path.resolve(target.output.path, `${name}${formatConf.ext}`)
 
-  const input = config.entry
+  const input = target.entry
 
   return {
     input: {
@@ -100,7 +103,7 @@ export function getRollupConfig (config: BundleConfig): RollupConfig {
       plugins: [
         rollupNodeResolve({
           resolveOnly: [
-            ...(config.resolveOnly ?? [])
+            ...(target.resolveOnly ?? [])
           ],
           mainFields: ['browser', 'module', 'main']
         }),
@@ -117,13 +120,13 @@ export function getRollupConfig (config: BundleConfig): RollupConfig {
         }),
         ...(minify
           ? [rollupTerser({
-              ...(config.terserOptions ?? {}),
-              module: (config.terserOptions?.module) ?? (['es', 'esm', 'module']).includes(formatConf.format)
+              ...(target.terserOptions ?? {}),
+              module: (target.terserOptions?.module) ?? (['es', 'esm', 'module']).includes(formatConf.format)
             })]
           : []),
-        ...(Array.isArray(config.plugins)
+        ...(Array.isArray(target.plugins)
           ? [
-              ...config.plugins
+              ...target.plugins
             ]
           : [])
       ]
@@ -131,7 +134,8 @@ export function getRollupConfig (config: BundleConfig): RollupConfig {
     output: {
       file: outputFilename,
       format: formatConf.format,
-      name: config.library ?? camelCase(config.output.name),
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      name: target.library || camelCase(name),
       exports: 'named',
       globals: {
         ...rollupGlobals

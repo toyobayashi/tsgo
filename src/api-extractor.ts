@@ -1,6 +1,7 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import { Extractor, ExtractorConfig } from '@microsoft/api-extractor'
+import { camelCase } from 'change-case'
 
 export function invokeApiExtractor (apiExtractorJsonPath: string, umdName?: string): void {
   const extractorConfig = ExtractorConfig.loadFileAndPrepare(apiExtractorJsonPath)
@@ -18,7 +19,7 @@ export function invokeApiExtractor (apiExtractorJsonPath: string, umdName?: stri
   }
 
   if (umdName) {
-    fs.appendFileSync(extractorResult.extractorConfig.publicTrimmedFilePath, `\nexport as namespace ${umdName};\n`)
+    fs.appendFileSync(extractorResult.extractorConfig.publicTrimmedFilePath, `\nexport as namespace ${camelCase(umdName)};\n`)
   }
 }
 
