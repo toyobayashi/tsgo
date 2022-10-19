@@ -13,9 +13,9 @@ $ npm install -g @tybys/tsgo
 ### 生成项目
 
 ``` bash
-$ mkdir mylib
+$ npm install -g @tybys/tsgo
+$ tsgo init mylib
 $ cd mylib
-$ tsgo gen
 ```
 
 ## 命令

@@ -1,9 +1,0 @@
-{
-  "extends": "../tsconfig/tsconfig.modern.json",
-  "compilerOptions": {
-    "outDir": "./lib/esm-modern"
-  },
-  "include": [
-    "./src/**/*"
-  ]
-}

@@ -1,7 +1,7 @@
 /**
- * Example library
+ * Example
  *
  * @packageDocumentation
  */
 
-export { add } from './add'
+export {}

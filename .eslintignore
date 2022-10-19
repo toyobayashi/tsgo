@@ -1,0 +1,5 @@
+**/dist
+node_modules
+/out
+.eslintrc.js
+/miniprogram_dist
