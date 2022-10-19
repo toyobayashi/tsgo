@@ -13,9 +13,10 @@ jobs:
     # Setup .npmrc file to publish to npm
     - uses: actions/setup-node@v2
       with:
-        node-version: '12.x'
+        node-version: '16.x'
         registry-url: 'https://registry.npmjs.org/'
         scope: '@tybys'
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: npm install --ignore-scripts
     - run: npm publish --@tybys:registry=https://registry.npmjs.org/ --access public

@@ -11,3 +11,4 @@ tsconfig*
 /test
 *.map
 jest.config*
+.github
