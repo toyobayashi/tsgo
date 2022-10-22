@@ -4,6 +4,8 @@ import { OutputOptions, rollup, watch } from 'rollup'
 import type { GlobalsOption, InputOptions, Plugin, ModuleFormat, RollupOutput } from 'rollup'
 import { terser as rollupTerser } from 'rollup-plugin-terser'
 import rollupNodeResolve from '@rollup/plugin-node-resolve'
+import rollupAlias from '@rollup/plugin-alias'
+import type { RollupAliasOptions } from '@rollup/plugin-alias'
 import { camelCase } from 'change-case'
 import type { MinifyOptions } from 'terser'
 import type { Configuration } from './index'
@@ -27,6 +29,14 @@ const formats = {
     define: {
       'process.env.NODE_ENV': '(process.env.NODE_ENV)',
       __DEV__: '(process.env.NODE_ENV !== "production")'
+    }
+  }),
+  esm: (isProduction: boolean) => ({
+    format: 'esm' as ModuleFormat,
+    ext: isProduction ? '.esm.min.js' : '.esm.js',
+    define: {
+      'process.env.NODE_ENV': isProduction ? JSON.stringify('production') : JSON.stringify('development'),
+      __DEV__: !isProduction
     }
   }),
   commonjs: (isProduction: boolean) => ({
@@ -73,6 +83,8 @@ export interface BundleConfig {
   terserOptions?: MinifyOptions
   plugins?: Plugin[]
   library?: string
+  preferBuiltins?: true
+  alias?: RollupAliasOptions
 }
 
 export interface RollupConfig {
@@ -96,12 +108,14 @@ export function getRollupConfig (target: BundleConfig, config: Configuration): R
   const outputFilename = path.resolve(target.output.path, `${name}${formatConf.ext}`)
 
   const input = target.entry
+  const preferBuiltins = typeof target.preferBuiltins === 'boolean' ? target.preferBuiltins : true
 
   return {
     input: {
       input,
       plugins: [
         rollupNodeResolve({
+          preferBuiltins,
           resolveOnly: [
             ...(target.resolveOnly ?? [])
           ],
@@ -114,6 +128,7 @@ export function getRollupConfig (target: BundleConfig, config: Configuration): R
           ...(formatConf.define || {}),
           ...bundleDefine
         }),
+        ...(target.alias ? [rollupAlias(target.alias)] : []),
         rollupCommonJS({
           transformMixedEsModules: true
           // ignoreDynamicRequires: true,
@@ -137,9 +152,7 @@ export function getRollupConfig (target: BundleConfig, config: Configuration): R
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       name: target.library || camelCase(name),
       exports: 'named',
-      globals: {
-        ...rollupGlobals
-      }
+      globals: rollupGlobals
     }
   }
 }
