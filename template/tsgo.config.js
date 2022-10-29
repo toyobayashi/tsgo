@@ -50,8 +50,7 @@ module.exports = defineConfig({
         declaration: true
       },
       customTransformersAfter: () => ({
-        before: [createModuleSpecifierTransformer('.js')],
-        after: [transformPureClass]
+        after: [transformPureClass, createModuleSpecifierTransformer('.js')]
       })
     },
     {
@@ -75,8 +74,7 @@ module.exports = defineConfig({
         outDir: path.join(root, 'lib/mjs')
       },
       customTransformersAfter: () => ({
-        before: [createModuleSpecifierTransformer('.mjs')],
-        after: [transformPureClass]
+        after: [transformPureClass, createModuleSpecifierTransformer('.mjs')]
       })
     }
   ],

@@ -76,7 +76,7 @@ export interface BundleConfig {
   /**
    * @defaultValue `'umd'`
    */
-  type?: 'umd' | 'esm-bundler' | 'commonjs' | 'mp'
+  type?: 'umd' | 'esm-bundler' | 'commonjs' | 'mp' | 'esm'
   globals?: GlobalsOption
   define?: Record<string, any>
   resolveOnly?: ReadonlyArray<string | RegExp>
