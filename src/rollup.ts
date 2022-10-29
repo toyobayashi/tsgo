@@ -85,6 +85,7 @@ export interface BundleConfig {
   library?: string
   preferBuiltins?: true
   alias?: RollupAliasOptions
+  strict?: boolean
 }
 
 export interface RollupConfig {
@@ -109,6 +110,7 @@ export function getRollupConfig (target: BundleConfig, config: Configuration): R
 
   const input = target.entry
   const preferBuiltins = typeof target.preferBuiltins === 'boolean' ? target.preferBuiltins : true
+  const strict = typeof target.strict === 'boolean' ? target.strict : true
 
   return {
     input: {
@@ -152,7 +154,8 @@ export function getRollupConfig (target: BundleConfig, config: Configuration): R
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       name: target.library || camelCase(name),
       exports: 'named',
-      globals: rollupGlobals
+      globals: rollupGlobals,
+      strict
     }
   }
 }
